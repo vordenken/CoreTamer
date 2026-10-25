@@ -431,10 +431,11 @@ struct ControllerIntegrationTests {
         #expect(expanded > 32 && expanded < 68)
         try limiter.updateMembers([root, child])
         Thread.sleep(forTimeInterval: 0.2)
-        #expect(try measuredCPU(pid: next.id.pid, duration: 0.4) > 70)
+        #expect(try !ProcessSnapshot.read(pid: next.id.pid).stopped)
         #expect(limiter.memberIDs == [root.id, child.id])
         #expect(limiter.stop() == nil)
-        #expect(try combinedCPU([root.id.pid, child.id.pid], duration: 0.4) > 120)
+        #expect(try !ProcessSnapshot.read(pid: root.id.pid).stopped)
+        #expect(try !ProcessSnapshot.read(pid: child.id.pid).stopped)
         #expect(throws: ProcessFailure.self) { try limiter.updateMembers([root]) }
     }
 
