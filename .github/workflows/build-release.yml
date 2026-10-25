@@ -144,6 +144,10 @@ jobs:
           fi
           echo "CODE_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
 
+      - name: Diagnose signing without and with timestamp
+        timeout-minutes: 5
+        run: python3 scripts/check_signing.py
+
       - name: Build universal app
         env:
           OUTPUT_DIR: ${{ runner.temp }}/release-build

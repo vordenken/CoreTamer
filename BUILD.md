@@ -177,6 +177,15 @@ to the feed. Sparkle tools are pinned to `Package.resolved` (currently 2.10.0).
 The published GitHub Release uses the tag as its title, contains the DMG, release
 notes and Gatekeeper instructions, and is marked as a prerelease for betas.
 
+After importing the certificate, `python3 scripts/check_signing.py` diagnoses signing
+on temporary copies of `/usr/bin/true`, first without and then with a timestamp.
+Each signing attempt has a 90-second timeout and each verification has a 30-second
+timeout. A failure stops the release before the build; no keychain settings or
+release signing options are changed. If the first probe fails, investigate key
+access and certificate trust. If only the timestamped probe fails, investigate the
+timestamp service/network and the printed `codesign` errors. A successful probe
+does not rule out a later intermittent failure or a Sparkle-specific issue.
+
 Release jobs are serialized across all branches and are never cancelled while
 running. Existing tags are never moved, and existing releases/assets are not
 overwritten. A retry before publication reuses the beta tag for the same commit.
