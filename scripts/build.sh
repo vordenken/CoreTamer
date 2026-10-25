@@ -26,6 +26,7 @@ output="$(cd "$output" && pwd)"
 derived="$(mktemp -d "${TMPDIR:-/tmp}/CoreTamer-build.XXXXXX")"
 trap 'rm -rf "$derived"' EXIT
 # Mapping the checkout and build paths to "." keeps usernames and folders out of the binaries.
+echo "==> Building universal app with Xcode (arm64 + x86_64)"
 xcodebuild -project CoreTamer.xcodeproj -scheme CoreTamer -configuration Release \
   -destination 'generic/platform=macOS' -derivedDataPath "$derived" \
   ARCHS='arm64 x86_64' ONLY_ACTIVE_ARCH=NO MARKETING_VERSION="$version" \
@@ -33,8 +34,9 @@ xcodebuild -project CoreTamer.xcodeproj -scheme CoreTamer -configuration Release
   OTHER_SWIFT_FLAGS="\$(inherited) -file-prefix-map $PWD=. -file-prefix-map $derived=." \
   OTHER_CFLAGS="\$(inherited) -ffile-prefix-map=$PWD=. -ffile-prefix-map=$derived=." \
   OTHER_LDFLAGS="\$(inherited) -Wl,-oso_prefix,$derived" \
-  -quiet build
+  build
 
+echo "==> Xcode build completed; preparing app for signing"
 app="$derived/package/CoreTamer.app"
 mkdir -p "$derived/package"
 ditto --norsrc "$derived/Build/Products/Release/CoreTamer.app" "$app"
@@ -43,13 +45,18 @@ xattr -cr "$app"
 signing=(--force --options runtime --sign "$identity")
 if [[ "$identity" != "-" ]]; then signing+=(--timestamp); fi
 framework="$app/Contents/Frameworks/Sparkle.framework"
+echo "==> Signing Sparkle Autoupdate"
 codesign "${signing[@]}" "$framework/Versions/B/Autoupdate"
 while IFS= read -r -d '' bundle; do
+  printf '==> Signing %s\n' "${bundle#"$app/"}"
   codesign "${signing[@]}" --preserve-metadata=entitlements "$bundle"
 done < <(find "$framework" -depth -type d \
   \( -name '*.xpc' -o -name '*.app' -o -name '*.framework' \) -print0)
+echo "==> Signing CoreTamerController"
 codesign "${signing[@]}" "$app/Contents/Helpers/CoreTamerController"
+echo "==> Signing CoreTamer.app"
 codesign "${signing[@]}" "$app"
+echo "==> Verifying signatures, architectures and embedded paths"
 codesign --verify --deep --strict "$app"
 for executable in "$app/Contents/MacOS/CoreTamer" "$app/Contents/Helpers/CoreTamerController"; do
   lipo -verify_arch arm64 "$executable"
@@ -61,6 +68,7 @@ for executable in "$app/Contents/MacOS/CoreTamer" "$app/Contents/Helpers/CoreTam
   fi
 done
 # Exclude cloud/Finder extended attributes from the redistributable archive.
+echo "==> Creating ZIP and exporting app"
 ditto -c -k --norsrc --keepParent "$app" "$derived/package/CoreTamer.zip"
 # Replace only these named build products; never remove the output directory itself.
 rm -rf "$output/CoreTamer.app"

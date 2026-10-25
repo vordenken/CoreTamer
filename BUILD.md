@@ -45,6 +45,12 @@ The [build script](scripts/build.sh):
    and architectures. Local builds use ad-hoc signing; CI supplies its certificate.
 5. Writes `dist/CoreTamer.app` and `dist/CoreTamer.zip`.
 
+The script prints Xcode's full build output and progress markers before each signing
+operation, verification and packaging. If a CI build stops making progress, inspect
+the last command after the most recent `==>` marker to distinguish compilation from
+a signing or packaging stall. Do not enable shell tracing (`set -x`) in release jobs,
+because it can expose signing credentials.
+
 The Bash-only build script accepts these environment variables:
 
 | Variable | Default | Purpose |

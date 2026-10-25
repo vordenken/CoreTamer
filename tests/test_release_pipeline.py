@@ -242,6 +242,18 @@ class ReleasePipelineTests(unittest.TestCase):
         settings = self.commands("xcodebuild")[0]
         self.assertIn("ARCHS=arm64 x86_64", settings)
         self.assertIn("CODE_SIGN_IDENTITY=-", settings)
+        self.assertNotIn("-quiet", settings)
+        stages = [
+            "Building universal app with Xcode",
+            "Xcode build completed",
+            "Signing Sparkle Autoupdate",
+            "Signing CoreTamerController",
+            "Signing CoreTamer.app",
+            "Verifying signatures, architectures and embedded paths",
+            "Creating ZIP and exporting app",
+        ]
+        positions = [result.stdout.index(stage) for stage in stages]
+        self.assertEqual(positions, sorted(positions))
         self.assertFalse(any(s.startswith("CURRENT_PROJECT_VERSION=") for s in settings))
         self.assertFalse((output / "CoreTamer.app/obsolete").exists())
         self.assertTrue((output / "CoreTamer.zip").exists())
@@ -285,6 +297,11 @@ class ReleasePipelineTests(unittest.TestCase):
             result = self.run_script("build.sh", FAIL_TOOL=tool)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("ERROR:", result.stderr)
+            if tool == "xcodebuild":
+                self.assertNotIn("Xcode build completed", result.stdout)
+            if tool == "codesign":
+                self.assertIn("Signing Sparkle Autoupdate", result.stdout)
+                self.assertNotIn("Signing CoreTamerController", result.stdout)
 
     def test_build_rejects_private_paths_and_cloud_corrupted_export(self):
         self.mock_tools()
