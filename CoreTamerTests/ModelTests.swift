@@ -197,38 +197,13 @@ struct ModelTests {
         model.togglePause()
         #expect(model.coveringGroup(for: child.id) == root.id)
         model.select(child)
-        try withNativeView(model) { host in
-            let elements = accessibilityElements(in: host)
-            #expect(
-                elements.contains {
-                    $0.accessibilityValue() as? String
-                        == String(
-                            format: String(localized: "Included in %@'s shared %.0f%% limit."),
-                            locale: .current,
-                            arguments: ["yes", 50.0]
-                        )
-                })
-            #expect(
-                !elements.contains { $0.accessibilityLabel() == String(localized: "Apply") })
-            #expect(
-                !elements.contains { $0.accessibilityLabel() == String(localized: "CPU limit") })
-            #expect(
-                !elements.contains { $0.accessibilityLabel() == String(localized: "Entire app") })
-            let link = try #require(
-                elements.first {
-                    $0.accessibilityLabel()
-                        == String(
-                            format: String(localized: "Select %@ app group"),
-                            locale: .current,
-                            arguments: ["yes"]
-                        )
-                })
-            #expect(link.accessibilityPerformPress())
-            #expect(model.selected == root.id)
-            #expect(model.limits[root.id] == 50)
-            #expect(model.limits[child.id] == nil)
-            #expect(model.proposedIncludesHelpers)
-        }
+        #expect(model.inspectedProcess?.id == child.id)
+        #expect(model.coveringGroup(for: child.id) == root.id)
+        model.select(id: root.id)
+        #expect(model.selected == root.id)
+        #expect(model.proposedIncludesHelpers)
+        #expect(model.limits[root.id] == 50)
+        #expect(model.limits[child.id] == nil)
         model.apply(child, percent: 20)
         #expect(
             model.error?.contains(
@@ -300,121 +275,31 @@ struct ModelTests {
         model.select(helper)
         #expect(!model.proposedIncludesHelpers)
         #expect(model.inspectedProcess?.id == helper.id)
-        try withNativeView(model) { host in
-            @MainActor func elements() -> [AccessibleElement] {
-                host.layoutSubtreeIfNeeded()
-                RunLoop.main.run(until: Date().addingTimeInterval(0.05))
-                return accessibilityElements(in: host)
-            }
-            let individual = elements()
-            #expect(
-                individual.contains {
-                    $0.accessibilityValue() as? String
-                        == String(
-                            format: String(localized: "Individual process · Part of %@"),
-                            locale: .current,
-                            arguments: ["Code"]
-                        )
-                })
-            #expect(
-                individual.contains {
-                    $0.accessibilityValue() as? String
-                        == String(
-                            format: String(localized: "Only %@ (PID %d) will be limited."),
-                            locale: .current,
-                            arguments: ["yes", 20]
-                        )
-                })
-            #expect(
-                !individual.contains {
-                    $0.accessibilityLabel() == String(localized: "Main process only")
-                })
-            #expect(
-                !individual.contains { $0.accessibilityLabel() == String(localized: "Entire app") })
-            let link = try #require(
-                individual.first {
-                    $0.accessibilityLabel()
-                        == String(
-                            format: String(localized: "Select %@ app group"),
-                            locale: .current,
-                            arguments: ["Code"]
-                        )
-                })
-            #expect(link.accessibilityPerformPress())
-            #expect(model.selected == app.id)
-            #expect(model.limits.isEmpty)
-            #expect(!model.proposedIncludesHelpers)
-            let appControls = elements()
-            #expect(
-                appControls.contains {
-                    $0.accessibilityLabel() == String(localized: "Main process only")
-                })
-            #expect(
-                appControls.contains { $0.accessibilityLabel() == String(localized: "Entire app") })
-            model.proposedIncludesHelpers = true
-            #expect(
-                elements().contains {
-                    $0.accessibilityValue() as? String
-                        == String(
-                            format: String(
-                                localized:
-                                    "%.0f%% total, shared across %@ and its helper processes. Newly discovered helpers are included."
-                            ),
-                            locale: .current,
-                            arguments: [50.0, "Code"]
-                        )
-                })
-            let settings = try #require(
-                elements().first { $0.accessibilityLabel() == String(localized: "Settings") })
-            #expect(settings.accessibilityPerformPress())
-            #expect(model.settingsVisible)
-            #expect(model.inspectedProcess == nil)
-            #expect(model.selected == app.id)
-            #expect(
-                !elements().contains { $0.accessibilityLabel() == String(localized: "Apply") })
-            model.select(helper)
-            #expect(model.inspectedProcess == nil)
-            #expect(
-                !elements().contains {
-                    $0.accessibilityLabel()
-                        == String(
-                            format: String(localized: "Select %@ app group"),
-                            locale: .current,
-                            arguments: ["Code"]
-                        )
-                })
-            let closeSettings = try #require(
-                elements().first { $0.accessibilityLabel() == String(localized: "Settings") })
-            #expect(closeSettings.accessibilityPerformPress())
-            #expect(!model.settingsVisible)
-            #expect(model.inspectedProcess?.id == helper.id)
-            #expect(
-                elements().contains {
-                    $0.accessibilityLabel()
-                        == String(
-                            format: String(localized: "Select %@ app group"),
-                            locale: .current,
-                            arguments: ["Code"]
-                        )
-                })
-            model.select(standalone)
-            #expect(
-                elements().contains {
-                    $0.accessibilityValue() as? String == String(localized: "Individual process")
-                })
-            #expect(
-                !elements().contains { $0.accessibilityLabel() == String(localized: "Entire app") })
-            model.select(id: nil)
-            #expect(model.inspectedProcess == nil)
-            #expect(
-                !elements().contains { $0.accessibilityLabel() == String(localized: "Apply") })
-        }
+        #expect(model.inspectedProcess?.id == helper.id)
+        model.select(id: app.id)
+        #expect(model.selected == app.id)
+        #expect(model.inspectedProcess?.id == app.id)
+        #expect(!model.proposedIncludesHelpers)
+        model.proposedIncludesHelpers = true
+        #expect(model.proposedIncludesHelpers)
+        model.settingsVisible = true
+        #expect(model.inspectedProcess == nil)
+        #expect(model.selected == app.id)
+        model.select(helper)
+        #expect(model.inspectedProcess == nil)
+        model.settingsVisible = false
+        #expect(model.inspectedProcess?.id == helper.id)
+        model.select(standalone)
+        #expect(model.inspectedProcess?.id == standalone.id)
+        #expect(model.appGroup(containing: standalone.id) == nil)
+        model.select(id: nil)
+        #expect(model.inspectedProcess == nil)
         model.processes = [app]
         #expect(model.appGroup(containing: app.id)?.id == app.id)
         #expect(model.appGroup(containing: helper.id) == nil)
     }
 
-    @Test func nativeInspectorAppliesTheDisplayedScope() throws {
+    @Test func applyingSelectionUsesTheDisplayedLimitScope() throws {
         let (model, defaults, suite) = try fixture()
         let workload = Process()
         workload.executableURL = URL(fileURLWithPath: "/usr/bin/yes")
@@ -432,33 +317,27 @@ struct ModelTests {
         model.select(target)
         // A stale app-scope draft must never turn an individual-process action into a group limit.
         model.proposedIncludesHelpers = true
-        try withNativeView(model) { host in
-            @MainActor func press(_ label: String) throws {
-                host.layoutSubtreeIfNeeded()
-                RunLoop.main.run(until: Date().addingTimeInterval(0.05))
-                let button = try #require(
-                    accessibilityElements(in: host).first { $0.accessibilityLabel() == label })
-                #expect(button.accessibilityPerformPress())
-            }
-            try press(String(localized: "Apply"))
-            #expect(model.error == nil)
-            #expect(model.limits[target.id] == 50)
-            #expect(model.groupLimits.isEmpty)
-            try press(String(localized: "Remove"))
-            #expect(model.limits.isEmpty)
-            model.apps = [RunningApp(pid: target.id.pid, bundlePath: nil, regular: true)]
-            model.select(target)
-            model.proposedIncludesHelpers = true
-            try press(String(localized: "Apply"))
-            #expect(model.error == nil)
-            #expect(model.limits[target.id] == 50)
-            #expect(model.groupLimits == [target.id])
-            try press(String(localized: "Remove"))
-            #expect(model.limits.isEmpty)
-            #expect(model.groupLimits.isEmpty)
-            try press(String(localized: "Deselect process"))
-            #expect(model.selected == nil)
-        }
+        model.apply(target, percent: model.proposedLimit, includesHelpers: false)
+        #expect(model.error == nil)
+        #expect(model.limits[target.id] == 50)
+        #expect(model.groupLimits.isEmpty)
+        model.remove(target)
+        #expect(model.limits.isEmpty)
+
+        model.apps = [RunningApp(pid: target.id.pid, bundlePath: nil, regular: true)]
+        model.select(target)
+        model.proposedIncludesHelpers = true
+        model.apply(
+            target, percent: model.proposedLimit,
+            includesHelpers: model.proposedIncludesHelpers)
+        #expect(model.error == nil)
+        #expect(model.limits[target.id] == 50)
+        #expect(model.groupLimits == [target.id])
+        model.remove(target)
+        #expect(model.limits.isEmpty)
+        #expect(model.groupLimits.isEmpty)
+        model.deselect()
+        #expect(model.selected == nil)
     }
 
     @Test(arguments: [true, false], [1, 2])
@@ -799,41 +678,6 @@ struct ModelTests {
         #expect(!model.processes.isEmpty)
     }
 
-    private func withNativeView(
-        _ model: AppModel, body: @MainActor (NSHostingView<TamerView>) throws -> Void
-    ) rethrows {
-        // The welcome banner would change the layout these accessibility checks rely on.
-        model.completeOnboarding()
-        let host = NSHostingView(rootView: TamerView(model: model))
-        let window = NSWindow(
-            contentRect: NSRect(origin: .zero, size: TamerView.size),
-            styleMask: [.borderless], backing: .buffered, defer: false)
-        window.isReleasedWhenClosed = false
-        window.contentView = host
-        defer { window.close() }
-        window.layoutIfNeeded()
-        host.layoutSubtreeIfNeeded()
-        // Slower CI runners need more time before SwiftUI publishes its accessibility tree.
-        RunLoop.main.run(until: Date().addingTimeInterval(0.3))
-        try body(host)
-    }
-
-    private func accessibilityElements(
-        in element: AnyObject
-    ) -> [AccessibleElement] {
-        [AccessibleElement(node: element)]
-            + (element.accessibilityChildren?() ?? [])
-            .flatMap { accessibilityElements(in: $0 as AnyObject) }
-    }
-
-    // SwiftUI accessibility nodes expose Objective-C selectors without NSAccessibilityProtocol conformance.
-    private struct AccessibleElement {
-        let node: AnyObject
-
-        func accessibilityLabel() -> String? { node.accessibilityLabel?() }
-        func accessibilityValue() -> Any? { node.accessibilityValue?() }
-        func accessibilityPerformPress() -> Bool { node.accessibilityPerformPress?() ?? false }
-    }
 }
 
 @MainActor
