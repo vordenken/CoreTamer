@@ -44,29 +44,26 @@ private func flat(
     #expect(sampler.sample([], at: 6).isEmpty)
 }
 
-@Test func germanLocalizationCoversCategoriesAndFormattedInspectorText() {
+@Test func germanLocalizationCoversCategoriesAndFormattedInspectorText() throws {
+    // Resolve German explicitly so the result does not depend on the machine's language.
+    let path = try #require(Bundle.main.path(forResource: "de", ofType: "lproj"))
+    let bundle = try #require(Bundle(path: path))
     let german = Locale(identifier: "de")
-    #expect(String(localized: "Process list", locale: german) == "Prozessliste")
-    #expect(String(localized: "General", locale: german) == "Allgemein")
-    #expect(String(localized: "Updates", locale: german) == "Updates")
+    func localized(_ key: String) -> String {
+        bundle.localizedString(forKey: key, value: nil, table: nil)
+    }
+    #expect(localized("Process list") == "Prozessliste")
+    #expect(localized("General") == "Allgemein")
+    #expect(localized("Updates") == "Updates")
+    #expect(localized("Background processes") == "Hintergrundprozesse")
+    #expect(localized("System & other users") == "System und andere Benutzer")
+    #expect(localized("Fast (1 s)") == "Schnell (1 s)")
     #expect(
-        String(localized: "Background processes", locale: german) == "Hintergrundprozesse")
-    #expect(
-        String(localized: "System & other users", locale: german) == "System und andere Benutzer")
-    #expect(String(localized: "Fast (1 s)", locale: german) == "Schnell (1 s)")
-    #expect(
-        String(
-            format: String(localized: "%.0f%%", locale: german),
-            locale: german,
-            arguments: [50.0]
-        ) == "50 %")
+        String(format: localized("%.0f%%"), locale: german, arguments: [50.0]) == "50 %")
     #expect(Bundle.main.localizations.contains("en"))
     #expect(Bundle.main.localizations.contains("de"))
 
-    let format = String(
-        localized: "Included in %@'s shared %.0f%% limit.",
-        locale: german
-    )
+    let format = localized("Included in %@'s shared %.0f%% limit.")
     #expect(
         String(format: format, locale: german, arguments: ["Browser", 50.0])
             == "Im gemeinsamen Limit von Browser (50 %) enthalten.")

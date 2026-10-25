@@ -47,8 +47,25 @@ if [[ "$unit_only" == false ]]; then
   /usr/bin/plutil -insert CoreTamerTests.EnvironmentVariables.CORE_TAMER_TEST_WORKLOAD \
     -string "$work/BusyThreads" "$xctestrun"
 fi
-xcodebuild -xctestrun "$xctestrun" -destination "platform=macOS,arch=$arch" \
-  -resultBundlePath "$work/TestResults.xcresult" -quiet test-without-building
+# Pin the host app's language so local machines and CI runners resolve the same UI strings.
+/usr/bin/plutil -replace CoreTamerTests.CommandLineArguments \
+  -json '["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]' "$xctestrun"
+if ! xcodebuild -xctestrun "$xctestrun" -destination "platform=macOS,arch=$arch" \
+  -resultBundlePath "$work/TestResults.xcresult" -quiet test-without-building; then
+  # -quiet hides Swift Testing issues; print them from the result bundle for CI logs.
+  xcrun xcresulttool get test-results summary --path "$work/TestResults.xcresult" \
+    | /usr/bin/python3 -c '
+import json
+import sys
+
+for failure in json.load(sys.stdin).get("testFailures", []):
+    name = failure.get("testName")
+    text = failure.get("failureText")
+    print(f"FAILED {name}: {text}", file=sys.stderr)
+' || true
+  echo "ERROR: Xcode tests failed. See the failures above." >&2
+  exit 1
+fi
 
 if [[ "$unit_only" == true ]]; then
   echo "Unit tests passed. Workload tests and the coverage gate were skipped (--unit-only)."

@@ -802,6 +802,8 @@ struct ModelTests {
     private func withNativeView(
         _ model: AppModel, body: @MainActor (NSHostingView<TamerView>) throws -> Void
     ) rethrows {
+        // The welcome banner would change the layout these accessibility checks rely on.
+        model.completeOnboarding()
         let host = NSHostingView(rootView: TamerView(model: model))
         let window = NSWindow(
             contentRect: NSRect(origin: .zero, size: TamerView.size),
@@ -811,7 +813,8 @@ struct ModelTests {
         defer { window.close() }
         window.layoutIfNeeded()
         host.layoutSubtreeIfNeeded()
-        RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+        // Slower CI runners need more time before SwiftUI publishes its accessibility tree.
+        RunLoop.main.run(until: Date().addingTimeInterval(0.3))
         try body(host)
     }
 
