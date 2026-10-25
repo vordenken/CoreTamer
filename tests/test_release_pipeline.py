@@ -260,10 +260,14 @@ class ReleasePipelineTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         settings = self.commands("xcodebuild")[0]
-        for setting in ("CURRENT_PROJECT_VERSION=42", "CODE_SIGN_IDENTITY=test-identity",
-                        "DEVELOPMENT_TEAM=TESTTEAM"):
+        signed = [command for command in self.commands("codesign") if "--sign" in command]
+        for setting in ("CURRENT_PROJECT_VERSION=42", "DEVELOPMENT_TEAM=TESTTEAM"):
             self.assertIn(setting, settings)
-        self.assertTrue(all("--timestamp" in c for c in self.commands("codesign") if "--sign" in c))
+        self.assertNotIn("CODE_SIGN_IDENTITY=test-identity", settings)
+        self.assertTrue(signed)
+        self.assertTrue(all(command[command.index("--sign") + 1] == "test-identity"
+                            for command in signed))
+        self.assertTrue(all("--timestamp" in command for command in signed))
 
     def test_build_rejects_invalid_inputs_before_invoking_tools(self):
         self.mock_tools()

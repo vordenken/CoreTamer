@@ -14,7 +14,8 @@ if [[ -n "${BUILD_NUMBER:-}" && ! "$BUILD_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
   exit 1
 fi
 identity="${CODE_SIGN_IDENTITY:--}"
-settings=("CODE_SIGN_IDENTITY=$identity")
+settings=()
+if [[ "$identity" == "-" ]]; then settings+=("CODE_SIGN_IDENTITY=-"); fi
 if [[ -n "${BUILD_NUMBER:-}" ]]; then settings+=("CURRENT_PROJECT_VERSION=$BUILD_NUMBER"); fi
 if [[ -n "${DEVELOPMENT_TEAM:-}" ]]; then settings+=("DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM"); fi
 output="${OUTPUT_DIR:-$PWD/dist}"
