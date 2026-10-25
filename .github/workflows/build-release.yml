@@ -1,0 +1,222 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [main, 'feature/*']
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'renovate.json'
+      - '.gitignore'
+      - '.gitattributes'
+      - '.github/CODEOWNERS'
+      - '.github/dependabot.yml'
+      - '.github/FUNDING.yml'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/workflows/tests.yml'
+      - 'CoreTamerTests/**'
+      - 'tests/**'
+      - 'features/**'
+      # The generated feed must not trigger another release.
+      - 'appcast.xml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  CREATE_DMG_VERSION: '1.3.0'
+  SPARKLE_VERSION: '2.10.0'
+
+jobs:
+  check:
+    name: Check release trigger
+    runs-on: ubuntu-latest
+    outputs:
+      should-build: ${{ steps.release-trigger.outputs.should-build }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Decide whether to build
+        id: release-trigger
+        env:
+          ACTOR: ${{ github.actor }}
+          BEFORE: ${{ github.event.before }}
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_SHA: ${{ github.sha }}
+          REF_NAME: ${{ github.ref_name }}
+        run: bash scripts/release.sh check
+
+  release:
+    name: Build and publish
+    needs: check
+    if: needs.check.outputs.should-build == 'true'
+    runs-on: macos-26
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    concurrency:
+      # All branches share release tags and the canonical appcast.
+      group: build-and-release
+      cancel-in-progress: false
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        if: vars.CLIENT_ID != ''
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          permission-contents: write
+
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token || github.token }}
+
+      - name: Load canonical appcast
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git show origin/main:appcast.xml > appcast.xml
+
+      - name: Prepare release metadata
+        id: release
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: bash scripts/release.sh prepare
+
+      - name: Refuse to overwrite a published release
+        uses: actions/github-script@v8
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        with:
+          github-token: ${{ steps.app-token.outputs.token || github.token }}
+          script: |
+            try {
+              await github.rest.repos.getReleaseByTag({
+                ...context.repo, tag: process.env.TAG
+              });
+            } catch (error) {
+              if (error.status === 404) return;
+              throw error;
+            }
+            core.setFailed(
+              `Release ${process.env.TAG} already exists. Do not overwrite signed assets. ` +
+              'If its feed publication failed, repair the appcast from the original artifact.'
+            );
+
+      - name: Run lint, static analysis and unit tests
+        run: bash scripts/test.sh --unit-only
+
+      - name: Import signing certificate
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$BUILD_CERTIFICATE_BASE64" || -z "$P12_PASSWORD" ]]; then
+            echo "ERROR: Configure BUILD_CERTIFICATE_BASE64 and P12_PASSWORD." >&2
+            exit 1
+          fi
+          umask 077
+          keychain="$RUNNER_TEMP/coretamer-signing.keychain-db"
+          password="$(openssl rand -base64 32)"
+          printf '%s' "$BUILD_CERTIFICATE_BASE64" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+          security create-keychain -p "$password" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$password" "$keychain"
+          security import "$RUNNER_TEMP/certificate.p12" -P "$P12_PASSWORD" \
+            -t cert -f pkcs12 -k "$keychain"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$password" "$keychain"
+          security list-keychains -d user -s "$keychain" "$HOME/Library/Keychains/login.keychain-db"
+          identity="$(security find-identity -v -p codesigning "$keychain" \
+            | sed -nE 's/^[[:space:]]*[0-9]+\) ([0-9A-F]{40}) .*/\1/p')"
+          if [[ ! "$identity" =~ ^[0-9A-F]{40}$ ]]; then
+            echo "ERROR: The imported certificate must contain exactly one valid signing identity." >&2
+            exit 1
+          fi
+          echo "CODE_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
+
+      - name: Build universal app
+        env:
+          OUTPUT_DIR: ${{ runner.temp }}/release-build
+          BUILD_NUMBER: ${{ steps.release.outputs.build }}
+          DEVELOPMENT_TEAM: NRKZZ9TFF7
+        run: bash scripts/build.sh
+
+      - name: Create and sign DMG
+        env:
+          OUTPUT_DIR: ${{ runner.temp }}/release-build
+        run: bash scripts/release.sh package
+
+      - name: Sign update and prepare appcast
+        env:
+          BUILD: ${{ steps.release.outputs.build }}
+          CHANNEL: ${{ steps.release.outputs.channel }}
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+          TAG: ${{ steps.release.outputs.tag }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: bash scripts/release.sh sign
+
+      - name: Prepare release notes
+        env:
+          PRERELEASE: ${{ steps.release.outputs.prerelease }}
+        run: bash scripts/release.sh notes
+
+      - name: Upload signed release and feed for recovery
+        uses: actions/upload-artifact@v7
+        with:
+          name: CoreTamer-${{ steps.release.outputs.tag }}
+          path: |
+            ${{ runner.temp }}/CoreTamer.dmg
+            ${{ runner.temp }}/appcast.xml
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.release.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          name: ${{ steps.release.outputs.tag }}
+          files: ${{ runner.temp }}/CoreTamer.dmg
+          prerelease: ${{ steps.release.outputs.prerelease == 'true' }}
+          body_path: ${{ runner.temp }}/release_notes.md
+          fail_on_unmatched_files: true
+          overwrite_files: false
+          token: ${{ steps.app-token.outputs.token || github.token }}
+
+      - name: Publish canonical appcast
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          worktree="$RUNNER_TEMP/appcast-main"
+          git worktree add --detach "$worktree" origin/main
+          git -C "$worktree" config user.name "github-actions[bot]"
+          git -C "$worktree" config user.email "github-actions[bot]@users.noreply.github.com"
+          cp "$RUNNER_TEMP/appcast.xml" "$worktree/appcast.xml"
+          git -C "$worktree" add appcast.xml
+          if git -C "$worktree" diff --cached --quiet; then
+            echo "appcast.xml is already current"
+            exit 0
+          fi
+          git -C "$worktree" commit -m "chore: update appcast for $TAG" \
+            -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+          git -C "$worktree" push origin HEAD:main
+
+      - name: Cleanup signing material
+        if: always()
+        run: |
+          set -euo pipefail
+          rm -f "$RUNNER_TEMP/certificate.p12"
+          if [[ -f "$RUNNER_TEMP/coretamer-signing.keychain-db" ]]; then
+            security delete-keychain "$RUNNER_TEMP/coretamer-signing.keychain-db"
+          fi

@@ -1,0 +1,19 @@
+1.0.0
+---
+### 🎉 Initial Release
+
+- 🐢 CPU limits for individual processes or one shared budget for an app and its helpers (100% = one CPU core)
+- 🗂️ Process list grouped into apps, background processes and system processes, with helpers shown under their owning app
+- 🔍 Search by name or PID and sort by name, PID, CPU usage or limit
+- 🌡️ Live CPU readings and a subtle CPU heat map in a native process table
+- 🎛️ Context-aware controls for individual processes and app groups, with a link to the owning app
+- ⏱️ Adjustable refresh rate (1 s, 2 s, 5 s or paused) and optional pause while pointing at the list
+- ⏸️ Pause and resume all CPU limits at once
+- 🔁 Optional restoration of app limits after apps restart
+- 👋 Welcome on first launch with quick choices for launch at login and automatic update checks
+- 🚀 Optional launch at login
+- 🔄 Automatic updates via Sparkle, with optional automatic downloads and beta versions
+- 🔔 Gentle menu bar reminders when updates are found during background checks
+- 🛟 Watchdog protection resumes limited processes if CoreTamer or a controller quits unexpectedly
+- 🌐 English and German interface, following the macOS language preference
+- 💻 Native macOS menu-bar app for Apple Silicon and Intel Macs

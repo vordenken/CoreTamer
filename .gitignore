@@ -1,0 +1,35 @@
+# Build products
+build/
+dist/
+DerivedData/
+.build/
+*.dSYM
+*.dSYM.zip
+*.profraw
+
+# Python release tooling
+__pycache__/
+*.py[cod]
+
+# Xcode user state
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+
+# SwiftPM leftovers
+.swiftpm/
+
+# Editors and macOS
+.DS_Store
+.vscode/
+
+# Secrets and signing material
+*.p12
+*.p8
+*.pem
+*.key
+*.mobileprovision
+*.provisionprofile
+.env
+.env.*
+!.env.example

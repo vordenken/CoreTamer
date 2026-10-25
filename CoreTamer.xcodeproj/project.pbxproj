@@ -1,0 +1,684 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C7A000000000000000000001 /* libCoreTamerCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A000000000000000000002 /* libCoreTamerCore.a */; };
+		C7A000000000000000000003 /* CoreTamerController in Embed Helpers */ = {isa = PBXBuildFile; fileRef = C7A000000000000000000004 /* CoreTamerController */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C7A000000000000000000005 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C7A000000000000000000006 /* LICENSE */; };
+		C7A000000000000000000007 /* ProcessControl.c in Sources */ = {isa = PBXBuildFile; fileRef = C7A000000000000000000008 /* ProcessControl.c */; };
+		C7A000000000000000000009 /* ProcessControl.c in Sources */ = {isa = PBXBuildFile; fileRef = C7A000000000000000000008 /* ProcessControl.c */; };
+		C7A000000000000000000042 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = C7A000000000000000000041 /* Sparkle */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C7A00000000000000000000A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C7A00000000000000000000B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7A00000000000000000000C;
+			remoteInfo = CoreTamerCore;
+		};
+		C7A00000000000000000000D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C7A00000000000000000000B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7A00000000000000000000E;
+			remoteInfo = CoreTamerController;
+		};
+		C7A00000000000000000000F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C7A00000000000000000000B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7A000000000000000000010;
+			remoteInfo = CoreTamer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C7A000000000000000000011 /* Embed Helpers */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Helpers;
+			dstSubfolderSpec = 1;
+			files = (
+				C7A000000000000000000003 /* CoreTamerController in Embed Helpers */,
+			);
+			name = "Embed Helpers";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		C7A000000000000000000002 /* libCoreTamerCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCoreTamerCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7A000000000000000000004 /* CoreTamerController */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CoreTamerController; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7A000000000000000000006 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		C7A000000000000000000008 /* ProcessControl.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ProcessControl.c; sourceTree = "<group>"; };
+		C7A000000000000000000012 /* CoreTamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreTamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7A000000000000000000013 /* CoreTamerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreTamerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7A000000000000000000014 /* ProcessControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProcessControl.h; sourceTree = "<group>"; };
+		C7A000000000000000000015 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C7A000000000000000000016 /* Exceptions for "CoreTamer" folder in "CoreTamer" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Info.plist,
+			);
+			target = C7A000000000000000000010 /* CoreTamer */;
+		};
+		C7A000000000000000000017 /* Exceptions for "CoreTamerTests" folder in "CoreTamerTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Fixtures/BusyThreads.c,
+			);
+			target = C7A000000000000000000018 /* CoreTamerTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		C7A000000000000000000019 /* CoreTamer */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C7A000000000000000000016 /* Exceptions for "CoreTamer" folder in "CoreTamer" target */,
+			);
+			path = CoreTamer;
+			sourceTree = "<group>";
+		};
+		C7A00000000000000000001A /* CoreTamerCore */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CoreTamerCore;
+			sourceTree = "<group>";
+		};
+		C7A00000000000000000001B /* CoreTamerController */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CoreTamerController;
+			sourceTree = "<group>";
+		};
+		C7A00000000000000000001C /* CoreTamerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C7A000000000000000000017 /* Exceptions for "CoreTamerTests" folder in "CoreTamerTests" target */,
+			);
+			path = CoreTamerTests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C7A00000000000000000001D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7A000000000000000000001 /* libCoreTamerCore.a in Frameworks */,
+				C7A000000000000000000042 /* Sparkle in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7A00000000000000000001E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7A00000000000000000001F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7A000000000000000000020 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C7A000000000000000000021 = {
+			isa = PBXGroup;
+			children = (
+				C7A000000000000000000019 /* CoreTamer */,
+				C7A00000000000000000001A /* CoreTamerCore */,
+				C7A000000000000000000022 /* ProcessControl */,
+				C7A00000000000000000001B /* CoreTamerController */,
+				C7A00000000000000000001C /* CoreTamerTests */,
+				C7A000000000000000000006 /* LICENSE */,
+				C7A000000000000000000023 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C7A000000000000000000022 /* ProcessControl */ = {
+			isa = PBXGroup;
+			children = (
+				C7A000000000000000000008 /* ProcessControl.c */,
+				C7A000000000000000000024 /* include */,
+			);
+			path = ProcessControl;
+			sourceTree = "<group>";
+		};
+		C7A000000000000000000023 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C7A000000000000000000012 /* CoreTamer.app */,
+				C7A000000000000000000002 /* libCoreTamerCore.a */,
+				C7A000000000000000000004 /* CoreTamerController */,
+				C7A000000000000000000013 /* CoreTamerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C7A000000000000000000024 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				C7A000000000000000000014 /* ProcessControl.h */,
+				C7A000000000000000000015 /* module.modulemap */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C7A00000000000000000000C /* CoreTamerCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7A00000000000000000002B /* Build configuration list for PBXNativeTarget "CoreTamerCore" */;
+			buildPhases = (
+				C7A00000000000000000002A /* Sources */,
+				C7A00000000000000000001E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C7A00000000000000000001A /* CoreTamerCore */,
+			);
+			name = CoreTamerCore;
+			productName = CoreTamerCore;
+			productReference = C7A000000000000000000002 /* libCoreTamerCore.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C7A00000000000000000000E /* CoreTamerController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7A00000000000000000002D /* Build configuration list for PBXNativeTarget "CoreTamerController" */;
+			buildPhases = (
+				C7A00000000000000000002C /* Sources */,
+				C7A00000000000000000001F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C7A00000000000000000001B /* CoreTamerController */,
+			);
+			name = CoreTamerController;
+			productName = CoreTamerController;
+			productReference = C7A000000000000000000004 /* CoreTamerController */;
+			productType = "com.apple.product-type.tool";
+		};
+		C7A000000000000000000010 /* CoreTamer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7A000000000000000000029 /* Build configuration list for PBXNativeTarget "CoreTamer" */;
+			buildPhases = (
+				C7A000000000000000000025 /* Sources */,
+				C7A00000000000000000001D /* Frameworks */,
+				C7A000000000000000000026 /* Resources */,
+				C7A000000000000000000011 /* Embed Helpers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C7A000000000000000000027 /* PBXTargetDependency */,
+				C7A000000000000000000028 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C7A000000000000000000019 /* CoreTamer */,
+			);
+			name = CoreTamer;
+			packageProductDependencies = (
+				C7A000000000000000000041 /* Sparkle */,
+			);
+			productName = CoreTamer;
+			productReference = C7A000000000000000000012 /* CoreTamer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C7A000000000000000000018 /* CoreTamerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7A000000000000000000031 /* Build configuration list for PBXNativeTarget "CoreTamerTests" */;
+			buildPhases = (
+				C7A00000000000000000002E /* Sources */,
+				C7A000000000000000000020 /* Frameworks */,
+				C7A00000000000000000002F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C7A000000000000000000030 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C7A00000000000000000001C /* CoreTamerTests */,
+			);
+			name = CoreTamerTests;
+			productName = CoreTamerTests;
+			productReference = C7A000000000000000000013 /* CoreTamerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C7A00000000000000000000B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2710;
+				LastUpgradeCheck = 2710;
+				TargetAttributes = {
+					C7A00000000000000000000C = {
+						CreatedOnToolsVersion = 27.1;
+					};
+					C7A00000000000000000000E = {
+						CreatedOnToolsVersion = 27.1;
+					};
+					C7A000000000000000000010 = {
+						CreatedOnToolsVersion = 27.1;
+					};
+					C7A000000000000000000018 = {
+						CreatedOnToolsVersion = 27.1;
+						TestTargetID = C7A000000000000000000010;
+					};
+				};
+			};
+			buildConfigurationList = C7A000000000000000000032 /* Build configuration list for PBXProject "CoreTamer" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				de,
+				Base,
+			);
+			mainGroup = C7A000000000000000000021;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C7A000000000000000000040 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = C7A000000000000000000023 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C7A000000000000000000010 /* CoreTamer */,
+				C7A00000000000000000000C /* CoreTamerCore */,
+				C7A00000000000000000000E /* CoreTamerController */,
+				C7A000000000000000000018 /* CoreTamerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C7A000000000000000000026 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7A000000000000000000005 /* LICENSE in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7A00000000000000000002F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C7A000000000000000000025 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7A00000000000000000002A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7A000000000000000000007 /* ProcessControl.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7A00000000000000000002C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7A000000000000000000009 /* ProcessControl.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7A00000000000000000002E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C7A000000000000000000027 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C7A00000000000000000000C /* CoreTamerCore */;
+			targetProxy = C7A00000000000000000000A /* PBXContainerItemProxy */;
+		};
+		C7A000000000000000000028 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C7A00000000000000000000E /* CoreTamerController */;
+			targetProxy = C7A00000000000000000000D /* PBXContainerItemProxy */;
+		};
+		C7A000000000000000000030 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C7A000000000000000000010 /* CoreTamer */;
+			targetProxy = C7A00000000000000000000F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C7A000000000000000000033 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/ProcessControl/include";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/ProcessControl/include";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		C7A000000000000000000034 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/ProcessControl/include";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/ProcessControl/include";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		C7A000000000000000000035 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CoreTamer/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vd.CoreTamer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+			};
+			name = Debug;
+		};
+		C7A000000000000000000036 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CoreTamer/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vd.CoreTamer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+			};
+			name = Release;
+		};
+		C7A000000000000000000037 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
+			};
+			name = Debug;
+		};
+		C7A000000000000000000038 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
+			};
+			name = Release;
+		};
+		C7A000000000000000000039 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
+			};
+			name = Debug;
+		};
+		C7A00000000000000000003A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
+			};
+			name = Release;
+		};
+		C7A00000000000000000003B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vd.CoreTamerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoreTamer.app/Contents/MacOS/CoreTamer";
+			};
+			name = Debug;
+		};
+		C7A00000000000000000003C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vd.CoreTamerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoreTamer.app/Contents/MacOS/CoreTamer";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C7A000000000000000000029 /* Build configuration list for PBXNativeTarget "CoreTamer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7A000000000000000000035 /* Debug */,
+				C7A000000000000000000036 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C7A00000000000000000002B /* Build configuration list for PBXNativeTarget "CoreTamerCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7A000000000000000000037 /* Debug */,
+				C7A000000000000000000038 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C7A00000000000000000002D /* Build configuration list for PBXNativeTarget "CoreTamerController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7A000000000000000000039 /* Debug */,
+				C7A00000000000000000003A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C7A000000000000000000031 /* Build configuration list for PBXNativeTarget "CoreTamerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7A00000000000000000003B /* Debug */,
+				C7A00000000000000000003C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C7A000000000000000000032 /* Build configuration list for PBXProject "CoreTamer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7A000000000000000000033 /* Debug */,
+				C7A000000000000000000034 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C7A000000000000000000040 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C7A000000000000000000041 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7A000000000000000000040 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = C7A00000000000000000000B /* Project object */;
+}

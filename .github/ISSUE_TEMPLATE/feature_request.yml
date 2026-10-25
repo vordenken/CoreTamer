@@ -1,0 +1,27 @@
+name: ✨ Feature Request
+description: Suggest an idea for CoreTamer
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Which problem would this feature solve?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How should it work?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Any alternatives or workarounds you have considered?
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
