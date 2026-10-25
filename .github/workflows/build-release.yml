@@ -132,8 +132,9 @@ jobs:
           security create-keychain -p "$password" "$keychain"
           security set-keychain-settings -lut 21600 "$keychain"
           security unlock-keychain -p "$password" "$keychain"
+          # Trust only codesign explicitly so private-key access needs no GUI approval.
           security import "$RUNNER_TEMP/certificate.p12" -P "$P12_PASSWORD" \
-            -t cert -f pkcs12 -k "$keychain"
+            -t cert -f pkcs12 -k "$keychain" -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$password" "$keychain"
           security list-keychains -d user -s "$keychain" "$HOME/Library/Keychains/login.keychain-db"
           identity="$(security find-identity -v -p codesigning "$keychain" \

@@ -12,6 +12,19 @@ from scripts import check_signing
 
 
 class SigningCheckTests(unittest.TestCase):
+    def test_certificate_import_trusts_codesign_without_trusting_all_applications(self):
+        workflow = (Path(__file__).resolve().parent.parent
+                    / ".github/workflows/build-release.yml").read_text()
+        start = workflow.index('security import "$RUNNER_TEMP/certificate.p12"')
+        end = workflow.index("security set-key-partition-list", start)
+        imported = workflow[start:end]
+        self.assertIn("-T /usr/bin/codesign", imported)
+        self.assertNotIn("-A", imported.split())
+        self.assertIn(
+            'security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$password" "$keychain"',
+            workflow,
+        )
+
     def test_workflow_diagnoses_after_import_and_before_build(self):
         workflow = (Path(__file__).resolve().parent.parent
                     / ".github/workflows/build-release.yml").read_text()

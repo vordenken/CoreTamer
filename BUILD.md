@@ -249,8 +249,12 @@ is supplied automatically; this workflow needs no PAT or notarization secrets.
 
 The certificate must contain exactly one valid signing identity for team
 `NRKZZ9TFF7`. The workflow imports it into a temporary keychain and deletes the
-certificate/keychain even when a later step fails. The Sparkle private key is
-written only to an owner-readable temporary file and deleted on exit.
+certificate/keychain even when a later step fails. The import explicitly trusts
+`/usr/bin/codesign` for private-key access (`-T`), in addition to setting the key
+partition list, so signing does not require interactive Keychain approval. It
+does not grant access to every application (`-A`). The signing diagnostic must
+still pass on the runner to confirm non-interactive access. The Sparkle private
+key is written only to an owner-readable temporary file and deleted on exit.
 
 For protected `main`, install a GitHub App with **Contents: Read & Write** on the
 repository and allow it to bypass the rule that prevents the generated appcast
