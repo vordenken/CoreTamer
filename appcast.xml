@@ -2,5 +2,30 @@
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
         <title>CoreTamer Updates</title>
+        <item>
+            <title>Version 1.0.0</title>
+            <description><![CDATA[
+<h3>🎉 Initial Release</h3>
+<ul>
+<li>🐢 CPU limits for individual processes or one shared budget for an app and its helpers (100% = one CPU core)</li>
+<li>🗂️ Process list grouped into apps, background processes and system processes, with helpers shown under their owning app</li>
+<li>🔍 Search by name or PID and sort by name, PID, CPU usage or limit</li>
+<li>🌡️ Live CPU readings and a subtle CPU heat map in a native process table</li>
+<li>🎛️ Context-aware controls for individual processes and app groups, with a link to the owning app</li>
+<li>⏱️ Adjustable refresh rate (1 s, 2 s, 5 s or paused) and optional pause while pointing at the list</li>
+<li>⏸️ Pause and resume all CPU limits at once</li>
+<li>🔁 Optional restoration of app limits after apps restart</li>
+<li>👋 Welcome on first launch with quick choices for launch at login and automatic update checks</li>
+<li>🚀 Optional launch at login</li>
+<li>🔄 Automatic updates via Sparkle, with optional automatic downloads and beta versions</li>
+<li>🔔 Gentle menu bar reminders when updates are found during background checks</li>
+<li>🛟 Watchdog protection resumes limited processes if CoreTamer or a controller quits unexpectedly</li>
+<li>🌐 English and German interface, following the macOS language preference</li>
+<li>💻 Native macOS menu-bar app for Apple Silicon and Intel Macs</li>
+</ul>
+]]></description>
+            <pubDate>Sun, 25 Oct 2026 14:54:22 +0000</pubDate>
+            <enclosure url="https://github.com/vordenken/CoreTamer/releases/download/v1.0.0/CoreTamer.dmg" sparkle:version="27" sparkle:shortVersionString="1.0.0" sparkle:edSignature="0JBbN+DHSfCysSX/vGjtpxd5HnK0QcqjqG39UCTbXCNLgVf7BxOZnn+nA8JjCg/R8nRwoDLjteoNdc9DtI+PDg==" length="2381030" type="application/octet-stream"/>
+        </item>
     </channel>
 </rss>
