@@ -86,7 +86,8 @@ prevents the test host from launching; quit it before running the tests.
 and on pushes to `main` and `feature/*` that touch code, scripts or workflows:
 
 - `actionlint` validates the workflows on Ubuntu.
-- `bash scripts/test.sh --unit-only` runs on a `macos-26` runner (Xcode 26).
+- `bash scripts/test.sh --unit-only` runs on the arm64 `xcode-27` runner
+  (macOS 27, public preview), matching the release toolchain.
 
 Shared runners cannot guarantee spare CPU capacity, so the timing-based workload
 tests and the coverage gate run only locally. Run the full `bash scripts/test.sh`

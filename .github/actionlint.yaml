@@ -1,5 +1,10 @@
 config-variables: null
 
+# GitHub's hosted preview label is not yet in actionlint's built-in runner list.
+self-hosted-runner:
+  labels:
+    - xcode-27
+
 paths:
   .github/workflows/build-release.yml:
     ignore:
