@@ -380,6 +380,12 @@ struct TamerView: View {
         }
     }
 
+    // A closure literal instead of the `model.setLogin` method reference: converting the
+    // method reference to SwiftUI's setter type crashes the Swift 6.3 compiler (Xcode 26.6).
+    private var loginBinding: Binding<Bool> {
+        Binding(get: { model.loginEnabled }, set: { model.setLogin($0) })
+    }
+
     private var welcome: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Welcome to CoreTamer").font(.headline)
@@ -390,7 +396,7 @@ struct TamerView: View {
             HStack(spacing: 16) {
                 Toggle(
                     "Launch at login",
-                    isOn: Binding(get: { model.loginEnabled }, set: model.setLogin))
+                    isOn: loginBinding)
                 if let updates {
                     Toggle(
                         "Check for updates automatically",
@@ -434,7 +440,7 @@ struct TamerView: View {
                 .font(.caption2).foregroundStyle(.secondary)
                 Toggle(
                     "Launch at login",
-                    isOn: Binding(get: { model.loginEnabled }, set: model.setLogin))
+                    isOn: loginBinding)
                 if model.loginNeedsApproval {
                     Button("Approve CoreTamer in Login Items…") {
                         SMAppService.openSystemSettingsLoginItems()
